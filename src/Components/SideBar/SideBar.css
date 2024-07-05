@@ -21,6 +21,11 @@
     cursor: pointer;
 
 }
+.side-link.active img{
+    padding-bottom: 2px;
+    border-bottom: 3px solid red;
+
+}
 .sidebar hr{
     border: 0;
     height: 1px;
@@ -51,4 +56,10 @@
 .small-sidebar hr{
     width: 50%;
     margin-bottom: 25px;
+}
+@media (max-width:957px) {
+    .sidebar{
+        display: none;
+    }
+    
 }

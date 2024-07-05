@@ -1,0 +1,161 @@
+Çözülmesi gereken sorunlar 
+1-- sidebar dan sonraki feed dediğimiz kısımda ki videolar tam sıfırdan başlıyor sidebar ikonun basldığında genişleyen kısım videonun üzerine düşüyor. bu kısım halledilsin 
+1Ç--sarnırım orjinal youtubede de aynı özllik var çok büyük bir soruna benzemiyor. sonra tekrar bakabilirsin
+
+2-- Datayı ilk çekmede alt değerlere ulaşılıyor ama ikinci renderda sorunlar çıkıyor why    
+3-- useParams ile videoId ve categorıd değerleri nasıl direk alınıdı. 
+4-- moment playvideo kısımında sinepper özellği okunamıyor çözülemiyor hatası 
+5--Comments bilgilerini alırken hata oluşuyor. bazen geliyor bazen gelmiyor Solved çözüldü 
+6--Recomended videolarına video apisi alınamayor. 
+7--Recomended videolarının id ve sini playvideo ya naklet ve ordan aldığın verileri bas
+8--useParams işini iyice çöz böyle olmuyor 
+9--Bu projeyi github a yükledğinde summary.txt kısmını gizli yapabiliri misin nasıl yapabiliriz
+
+
+proje özeti 
+1 HEADER KISMI
+   
+    * header kısmıdnda oluşturlan nav etiketleri arasına 3 adet div yerleştirdik bu divler sağ sol ve orta kısmı temsile edecek sağda  ve solda ikonlar ortada ise input değerleri var (nav büyük ihtimalle space betwen verilmiştir )
+    * Projenin ana css i olan index css kısmında padding ve border gidi değerler sıfıra çekildi ayrıca  border-sizing:border-box özelliği sayesinden kutuların boyutlarının kendi belirdeğimizi boyutlar oluştursun yani paddinng ve border değerleri kutuların boyutlarını etkilemesin diye bu özelliği kullandık 
+    *
+    * Headerın altına router dom ile Home u anasayfa olarka belirlerdik path = "/" element = {<Home>} yaptık 
+    Ve Home'nin içinde SideBar ile sağ tarafta bir bar oluşturduk. buraya iconlar sınıfından veri almadan direk bütün iconları resimler ile hallettik . 
+    * bütün resimler import edildi Sonra ilk div içerindeki iconlardan açılır kapanır pencere tarzı olması için bir props tetiklenmesi yapmak için onClik={()=>setSidebar(prev=>prev===false?true:false )} diye bir çeşit açılır kapanır düğme yaptık  bu düğmeye bastın mı kardeşim senin sidebar özellğin trudan false falseden trueya dönecek ve eğer ki <div className={ `sidebar ${ sidebar?"":"small-sidebar"}` }  > şeklinde akla ziyan bir elementa oluşturduk burada sidebar dan aldığımız anahtar ile small -sidebar adında extra bir div yapısı oluşturduk. 
+
+ **** Navbarda state in durumunu güncelledik aslında eğer redux kulllanıyor olsaydık bunu reducer ile yapardık ama burda daha basit bir iş olduğu için uzatmanın alemiyoktu.    
+
+ **** Toggle ile tetiklenenen smal-sidebar clasından small-sidebar p{display:none} bu samla durumunda p içindeki yazıları görmeyeceğini gösteriyor   
+  
+
+2 VİDEO KISMI 
+Home sayfası altındaki Feed sayfası içinde bulunan linke tıkladığımda bana category ve id li bir router la adresli PlayVideo sayfasına yönlendirdi 
+
+Video.jsx içerisinde import ettiğimiz video ile videoyu oynattık(PlayVideo içinde tabi). controls aoutoplay ve mute özelliklerini de elementin içine ekledğik ki video oynatılabilisin. 
+Vidonun altında izle like dislike ve share gibi ikonlar ekledik 
+
+** VideoPlay alındaki açıklamalar yorumlar imgler like dislike share ikonları kanal ismi kanalr yorumları nın css leri düzenlendi 
+ göze çarpan yeni özelliklerden 
+
+ flex-basis kutuya ya da elemente neysee artık başlangıç değerini verir ve bu değer esnektir responsive tasarım için kullnışlı olarak değişir. yani kutunun temel boyuntunun div in yüzde kaçı olmasını istityorsan basis değeri uygundur. 
+ bir 
+ Video.jsx için oluşturlulan css lerde wrap özelliği kullanılarak Recomended dediğimiz rightSide videoları sağ tarafta dizilmiştir.
+
+** Yine Recomended için  de basis yüzde 30 kullandık ki sayfanın yani içinde bulunduğu divin yüzde 30 unu kaplasın 
+
+***flex basis de play-video ve recommend  sınıflarına dikkat edilirse %69 ve %30 değerleri verildi büyüme ve küçülmeyi dert etmeye gerek olmayan bir özellik bu.  ikisinin toplam yüz olarak ana divimizie yerleştirdik 
+
+*** 
+
+3-Youtube APİ ENTEGRE
+** olası senaryolar 
+Youtube api den alınan başlıklar video linki bunlar direk olarak nasıl
+ 1- Yotube Develepoer consol kısmındadan Youtube api V3 aratarak create credenetel kısmında api anahtarının aldık:
+  now there is my api key :AIzaSyAVVM7cbobKKiDqFdhuJrMeQlL9BFBsrT4
+  2- Api anahtarını aldıktatan sonra tekrar youtube DataApi kısmına gelip bu defa Referance kısmına gireresek sol barda ihtiyacımız olan youtube verilerini görebiliriz. 
+  
+*** neler yaptık... 
+sidebar tarafında bulunan ikonlara bastığımda bir tane sınıfı active etmeliyim bu active adında bir sınıf olsun yani ben her ikona bastığımda bu sınıf active haline gelsin. o zaman const [category, SetCategory] = useState(0) ile her cliccklenmede SetCategory o kategeriye ait id olan id yle güncellesin kategoriyi ve aynı zamanda  bu divin sahip olduğu clasa bir tane ective sınıfı eklesin ok. o aktif sınıfı da border-bottom ı red yapsın böylece nereye bastığımı anlamış olurum . 
+
+peki ben bu categori statetini nerede tanımalayacağım.  Home.jsx içinde tanımlayığ bir alt olan Sidebara props olarak gönderebilirisin. zaten klick işlmeleri orada olduğu için orada yapılan her basma senin categoryinin id değerini ve active klasinının nerede olduğunu işaretleyecek. 
+
+   <div className={`side-link${category?"active":""} `} onClick={()=>setCategory(0)} > bu kodda bana diyor ki sen o bölüme bastığın zaman ben o bölüme bir active sınıfı ataması yapacağım ve ayrıca o bölüme ait bi de category güncellmeesi yapıyorum. dolayısıyla category numarasına göre de home un sağ kısmında göstermiş olduğum videoları da o id numarasaına göre seçilen videolardan seçiceğim. 
+   ************
+YoutubeAPi
+
+Yotube -Apiye özel kendi istediğiğimiz kategori id ülke ve hatta max resultdiye seçenekler ekleyerek bir api adres, alabiliyoruz . burda dikkatimi çekn key api yi başka bir sayfada kaydedip export edip direk api adresine backtik ile eklememiz ayrıca adrese categori id yi de ekleyebiliyoruz ki gelen sonuçların içinde direk yansıyor. useEfect ile [categoryId] li olrak çalğırdık her categori değiştiğinde dolayısıyla değişen bir adres oacağından spessifik bir adres ile veri akışı olacak. 
+gelen verileri veya oluşturlan adresten api ile veri çekme işini zaten rahat yapabiliryoruz. istersek fetch, axios ile istersek rtk query ile veriyi çekip daha sonra map ile basabiliriz. 
+ yalnız geln verleri clg ile kontrol edip daha rahat görebilirizi çünkü veriler data. items içerisinde alt başlıklar ile geliyro . verinin başlığı izlenme sayısı imagesi videonun kendisi bunların hepsi gelen dizinin içerisinde dolayısıyla bunları ertık ekrana basmak çok kolay . biz zaten basılınca nasıl görünmesi gerek bunun için css ler yazmıştık 
+  o zaman aldığım veriyi ekrana basma işi kalıyor.
+
+  ***
+  yapılması gerekenler 
+  1- verileri ekrna bastık. sağ tarafta tetiklenme ile category id ye göre bir veri akışı da sağladık. ok . ama days ago ve milyon bin izlenme gibi değerleri tam sayıya çevirmek için extra fonksiyonlar kullanmamaız lazım . bunların düzeltilmesi lazım . 
+
+
+  ****
+  benim value_conventorÜm 
+
+  const valu_conventor =(value)=>{
+    if(value>=1000000){
+        return Math.floor(value/1000000)+M
+    }
+     else if(value>=1000){
+        return Math
+     }
+
+  }
+   
+   *** şimdi ben apiden aldığım verileri direk data adlı state içerisine aldım . ama data nın alt birimlerinde benim aradığım değerler var misal item.statistics.viewCount burada izlenme sayısı yazılıyor ama bunu daha görsel hale getirmek için milyon bilyon thousnd gibi değerler ile şükella etmem lazım bunun için data.js kısmındı bir fonkisyon yazıp export ederek fonkisyonumua isteğdim yerden ulaşabilirim. ok o zaman 
+
+   ***useParams Video.jsx kısmında direk useParams tanımlayıp alt PlayVideo.jsx kısmına props gönderereek video linkinin id kısmına videoId ekledik  ekledik. 
+
+PlayVideo için video APİ 
+
+  ***biz bütün verilerimizi feed bölümünde alıp kategorilerine göre basmıştık. video resmine bastığımızda (bunun için bütün bir video cartını Link etiketleri içerisine aldık. ) yeni linkimizi ise videoId sine göre yeni bir fetchApi linki üzerindena alıyoruz. ve aldığımız linkin içerisinde PlayVideo içerisinde hazırladığıımız başlık kanal adı videVount gibi derğerleri yine tek tek apiData.items.snippet.title vs şeklinde basıyoruz. 
+  ÖNEMLİ:  apiden verileri aldığında uygunluğunu kontrol etmemiz lazım aksi halde ekran hata verir. how it is apiDAta?apiData.map gibi  
+
+
+PlayVideo İçin chanel Api 
+
+ const fetchChannelData= async ()=>{
+    const channelDetails_url=`https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`
+    await fetch(channelDetails_url).then(response=>response.json()).then(data=>setChannelData(data.items[0]))
+  } 
+
+*** Şimdi bu youtube Api si bize istedğimiz türde bir sürü api linki veriyor. yeter ki almasını bil. video idsine göre categrori id sine göre chanelid sine göre alabilirsin. biz en son kanal bilgilerini almak için yukarıdaki linki yazdık. bizim daha önce aldığımız link videolar için vide bilgileri için gelen bilgiydi. ama burada biz kanal bilgilerini alıyoruz. e haliyle  izlediğim ya da tetiklediğim (Link) video bir kanala ait olacak zaten kanal linkinin arasına da video linkini yerleştirip öyle alıyoruz.yine gelen linkin değerlerini then ile yakalayıp channelData adındaki state içerisine alıyorum verileri. 
+
+PlayVideo İçin comment Api 
+ 
+ aynı şekilde yorumlar yorum yanıtları yorum sayıları yorumların beğenenleri içinde bir api linkinden veri çekip basacağız. burada yine videoId ve key anahtarını video linkinin içine dahil ediyoruz. haliyle yorum yapan herbir kimse için de img like hesap vs gibi bir sürü değer var bunların css ini zaten baştan hazrılmıştık şimdi sıra bunların yerini commentApi.title gibi değiştirelim.tabi burada birden fazla yorum olacağından verinin üzerinden map ile dönmem gerektiğini söylememe gerek yok herhalde 
+
+Son olarak comment bilgilerini otherData fonkisyonu içinde çağırdığımızda sorun oluşuyor ama ayrı bir fonkisyon içinde çağırararak sorunları halletik . hem chanel bilgileri hem de comment bilgileri neden aynı anda çalışmıyor
+
+
+
+
+
+
+ RECOMENDEND PART:
+ Recomended bölümünğü Video kısmında  
+    <PlayVideo videoId={videoId} />
+    <Recomended categoryId ={categoryId}/>  şeklinde kullanmıştık.sol tarafta hedef videomuz oyanıtılırken sağ tarafta ise recommend videolarımız görünecek o zaman ben nasıl ki en başta yukarıda Home sayfasında tanımladığım değerime sidebar kısmında basarak catogoriy ıd sini setlemiştim ve stlediğim gibi de feed bölümünde bu catogroiyıd ye göre gelen linkten videoları feed içinde bamıştım. peki benim catogory id değerim kayıtlı olacak mı state içinde evet. ben ordaki değeri yine recomended içindeki vieolar için de kullanabilir miyim ? 
+
+    Recomended içinden verileri alamadım . videoların verisini alıp daha sonra bunları Link ile tekrarPlayVideoya yönlendireceğim. ve ordan useParams ile tekrar videoId yi yakalacayacağım. ve buna göre tekrar videonun id sine göre oynatma yapacağım.  
+
+    ben zaten en başta o videoId yi nerden aldığımızı anlamadım 
+
+    useParams hakkında anladığım galiba biz path olarak gösterdiğimiz
+    <Route path='/video/:categoryID/:videoId' element={<Video/>} /> bu sayfaya geldiğinde bu sayfa içerisinde yani Video.jsx componentinde  const {videoId, categoryId}=useParams() ile videoId ve categoryId değerlerine erişebiliyoruz. 
+      <Link key={index} to={`video/${item.snippet.categoryId}/${item.id}`} >  ve Feed sayfasında map ladiğim bir videoya tıklayınca da beni direk Video.jsx haliyle PlayVideo.jsx sayfasına götürüyor.
+      yani useParams senin path olarak verip gitmek istediğin sayfanın değerlerini yakalar sana verir
+
+
+Ödev: recomended videolarına bastığında bu videolar seni bir linke yönlendimeli o zaman Link kullanılacak ve haliyle PlayVideo.jsx açılacak . oraya gidip değerleri haliyle useParams ile tekrar uca eklemelisin ki çalışsın 
+
+***
+Recomended içerisinde video linkinden veri alamıyorum çünkü linkin içerisine categoryid yi yerleştirermiyorum.
+
+categorıd değerini oraya aktaramıyorum . 
+
+ÇOOK ÖNEMLİ 
+  1  <Route path='/video/:categoryId/:videoId' element={<Video/>} /> 
+  2  const {videoId, categoryId}=useParams() (Video.jsx )
+  3  <Link key={index} to={`video/${item.snippet.categoryId}/${item.id}`} className="card"> => direk burdan başlıyorum yani Link den bakın link bu categoryId ve videoId değerlerini dinamik olarak nerden alıyor Api den alıyor. Api den aldığı değerleri bir state içine attı[apiData,setApiData] sonra da onların üzerinden map ile döndü ve her dönüşte onları Link to={${"/catogorId/videoId ...}} şeklinde aldı her birini peki bu aldıklarının her birini nerde nasıl açacak. Tabi ki nerde açmasını istiyorsak orada bunu da 1  <Route path='/video/:categoryId/:videoId' element={<Video/>} />  sayesinde yapıcak ok. peki bu veriler Video sayfasında gösterilecek de ben bunların  const {videoId, categoryId}=useParams()  değerlerini orada yakalayapıp kullanabilirim artık .  <PlayVideo videoId={videoId}  /> ile bir alt komponenete gönderip orada daha da rahat ve spessifik kullanabbilirsin. senin elinde videoId var dolayısıyla sen bu ıd ye göre tekrar link çağırıp 
+   <iframe width="668" height="376" src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} videoID ni buraya yerleştirerek bunu oynatabilirsin.  
+
+
+ÇOOK ÖNEMLİ 
+Bak ben en başta feed bölümede categoriıd ye göre videolar aldık ve bu videoları feed bölümünde dizdik. ve aldığımız videoların bilgilerini de yine bir state e atadık.  ve o state üserinde yine map ile dönerek başlık resim  kanal adı gibi bilgileri bastık ama videonun detaylarını görmek için bu bilgileri alt komponentlere props olarak göndermedik sadece Link useParams sayesinde videoId sini ve categoriıd sini gönderip orada tekrar bir fetch işlemi ile yeni bir api aldık ve bu aldığımız api yi ye videId sini yazarak doğru videoyu bulduk . bu videonun detalylı bilgilerini ise başka satetlere atarak yine map ledik. yani 
+
+
+RECOMENDED VİDEO PlAY=>
+evet gelelim kuru fasulyenin faydalarına şimdi bizim. sağ tarafta tavsiye eilen vieolara bir Link eklememiz ve bu linklere basıldığında aynı şekilde categoryıd ve videoId olarak video semtine yollamamamız lazım ki bunlar da Video semtinde oyun oyanayabilsinler. şimdi dedik ki Vide şehrine giden yolu tanımladık zaten. o zaman gitmek için gerekli yükleri de bindirmeliyiz . ya da haritayı navigasyonu doğur işaretlemeliyiz ki adam doğru yoldan gitsin ya da gittiğinde elinde doğru veriler olsun 
+
+
+
+ÇOOK ÖNEMLİ 
+
+bakın bizim PlayVideo semtimiz videId yi direk props olarka yukarıdan alıyordu Video kısmından ama biz recomended kısmınıda eklediğimizde videId yi artık props olarak değil useParams() ile almak zorundayız. aksi halde doğru çalışmaz. ve ve ve videId her aldığımızda verileri yeniden getirmesi için fetchData kısmına [videId] yapmalıyız
+
+
+RESPONSİVE YAPMA *** 
